@@ -72,6 +72,7 @@ class Exercise
         return $this->exerciseLogs;
     }
 
+
     public function addExerciseLog(ExerciseLog $exerciseLog): static
     {
         if (!$this->exerciseLogs->contains($exerciseLog)) {

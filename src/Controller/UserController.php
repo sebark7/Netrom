@@ -8,7 +8,9 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class UserController extends AbstractController
 {
@@ -16,7 +18,7 @@ class UserController extends AbstractController
     #[Route('/user', name: 'app_user')]
     public function index(): Response
     {
-        return $this->render('user/index.html.twig', [
+        return $this->render('user/exercises.html.twig', [
             'controller_name' => 'UserController',
         ]);
     }
@@ -27,7 +29,6 @@ class UserController extends AbstractController
         $userList = [];
         $userList = $repository->findAll();
 
-
         return $this->render('user/users.html.twig', [
             'userList' => $userList,
         ]);
@@ -35,7 +36,8 @@ class UserController extends AbstractController
 
 
     #[Route('/user/register', name: 'register_user')]
-    public function store(Request $request, UserRepository $repository): Response
+    public function store(Request $request, UserRepository $repository,
+    UserPasswordHasherInterface $passwordHasher): Response
     {
 
         $user = new User();
@@ -47,6 +49,11 @@ class UserController extends AbstractController
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
             $user = $form->getData();
+
+            $password = $passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($password);
+            $user->setRoles(['ROLE_USER']);
+
 //            dd($form->getData());
             $repository->saveUser($user);
             //die();
@@ -56,7 +63,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/register.html.twig', [
-                    'form' => $form
+            'form' => $form
         ]);
     }
 

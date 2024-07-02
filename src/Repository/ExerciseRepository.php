@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Exercise;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,6 +16,23 @@ class ExerciseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Exercise::class);
     }
+
+    public function saveExercise(Exercise $exercise): void
+    {
+        $this->getEntityManager()->persist($exercise);
+        $this->getEntityManager()->flush();
+    }
+
+    public function findById(int $id): ?Exercise
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
 
     //    /**
     //     * @return Exercise[] Returns an array of Exercise objects
