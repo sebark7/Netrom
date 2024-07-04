@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Exercise;
+use App\Entity\MuscleGroup;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,6 +24,13 @@ class ExerciseRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
+    public function updateExercise(Exercise $exercise): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($exercise);
+        $entityManager->flush();
+    }
+
     public function findById(int $id): ?Exercise
     {
         return $this->createQueryBuilder('e')
@@ -32,7 +40,25 @@ class ExerciseRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function deleteById(int $id): void
+    {
+        $entityManager = $this->getEntityManager();
+        $exercise = $this->find($id);
 
+        if ($exercise) {
+            $entityManager->remove($exercise);
+            $entityManager->flush();
+        }
+    }
+
+    public function findType(string $name) : ?Exercise
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.name = :val')
+            ->setParameter('val', $name)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
     //    /**
     //     * @return Exercise[] Returns an array of Exercise objects

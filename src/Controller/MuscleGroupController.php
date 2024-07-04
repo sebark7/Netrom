@@ -47,6 +47,7 @@ class MuscleGroupController extends AbstractController
                           MuscleGroupService $muscleGroupService): Response
     {
 
+
         $muscleGroup = new MuscleGroup();
 
         $form = $this->createForm(MuscleGroupType::class, $muscleGroup);
@@ -60,9 +61,11 @@ class MuscleGroupController extends AbstractController
 
             $muscleGroup = $form->getData();
 
-            if(!$muscleGroupService->verificationUniqueValue($muscleGroup))
+            $message = $muscleGroupService->verificationUniqueValue($muscleGroup);
+
+            if(key($message) == "error")
             {
-                $error = "This muscle group " .$muscleGroup->getTipul(). " is already in the DB.";
+                $error = $message['messages'];
                 return $this->render('muscle_group/addMuscleGroup.html.twig', [
                     'form' => $form,
                     'error' => $error
@@ -70,8 +73,6 @@ class MuscleGroupController extends AbstractController
             }
 
             $repository->saveMuscleGroup($muscleGroup);
-            //die();
-            // ... perform some action, such as saving the task to the database
 
             return $this->redirectToRoute('app_muscle_group');
         }
@@ -80,7 +81,10 @@ class MuscleGroupController extends AbstractController
             'form' => $form,
             'error' => $error
         ]);
+
     }
+
+
 //
 //    #[Route('/muscle_group/{name}', name: 'app_muscle_group_id')]
 //    public function muscleGroupView(string $tipul, ExerciseRepository $repository): Response
