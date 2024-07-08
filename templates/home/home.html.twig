@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DefaultController!{% endblock %}
+
+{% block body %}
+    <style>
+        .site-header {
+            position: relative;
+            background-color: #def7ff;
+        }
+
+        @media (min-width: 600px) {
+            .site-header__wrapper {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+        }
+
+        .brand {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .nav {
+            display: block;
+        }
+
+        @media (min-width: 600px) {
+            .nav__wrapper {
+                display: flex;
+                justify-content: flex-end; /* This will align the ul to the right */
+            }
+        }
+
+        ol, ul {
+            list-style: none;
+        }
+
+        .nav__item {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+
+        .nav__wrapper .nav__item {
+            margin-left: 20px; /* Space between the list items */
+        }
+        .nav__wrapper{
+            margin-right: 20px;
+        }
+    </style>
+    {% block stylesheets %}
+    {% endblock %}
+    <header class="site-header">
+        <div class="wrapper site-header__wrapper">
+            <a href="#" class="brand">Brand</a>
+            <nav class="nav">
+                <ul class="nav__wrapper">
+                    <li class="nav__item"><a href="#">Home</a></li>
+                    <li class="nav__item"><a href="#">About</a></li>
+                    <li class="nav__item"><a href="#">Services</a></li>
+                    <li class="nav__item"><a href="#">Hire us</a></li>
+                    <li class="nav__item"><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+{% endblock %}

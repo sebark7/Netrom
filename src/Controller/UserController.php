@@ -15,18 +15,25 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 class UserController extends AbstractController
 {
 
+
     #[Route('/user', name: 'app_user')]
     public function index(): Response
     {
-        return $this->render('user/exercises.html.twig', [
+        $user = $this->getUser();
+
+        $imageData = $user->getImageData();
+        $mimeType = $user->getImageMimeType();
+
+        return $this->render('user/user.html.twig', [
             'controller_name' => 'UserController',
+            'user' => $user,
+            'mimeType' => $mimeType,
         ]);
     }
 
     #[Route('/users', name: 'app_users', methods: ['GET'])]
     public function userList(UserRepository $repository): Response
     {
-        $userList = [];
         $userList = $repository->findAll();
 
         return $this->render('user/users.html.twig', [
@@ -50,6 +57,14 @@ class UserController extends AbstractController
             // but, the original `$task` variable has also been updated
             $user = $form->getData();
 
+            $imageFile = $form->get('imageFile')->getData();
+
+            if ($imageFile) {
+                $imageData = file_get_contents($imageFile->getPathname());
+                $user->setImageData($imageData);
+                $user->setImageMimeType($imageFile->getMimeType());
+            }
+
             $password = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
             $user->setRoles(['ROLE_USER']);
@@ -65,6 +80,24 @@ class UserController extends AbstractController
         return $this->render('user/register.html.twig', [
             'form' => $form
         ]);
+    }
+
+
+    #[Route('/user/image/{id}', name: 'user_image')]
+    public function showImage(int $id, UserRepository $repository): Response
+    {
+        $user = $repository->findBy(['id' => $id]);
+        $imageData = $user->getImageData();
+        $mimeType = $user->getImageMimeType();
+
+        if (!$imageData) {
+            throw $this->createNotFoundException('No image found');
+        }
+
+        $response = new Response($imageData);
+        $response->headers->set('Content-Type', $mimeType);
+
+        return $response;
     }
 
 }

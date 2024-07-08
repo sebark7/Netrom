@@ -87,7 +87,6 @@ class ExerciseController extends AbstractController
 
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             $exercise = $form->getData();
@@ -99,7 +98,7 @@ class ExerciseController extends AbstractController
                 $error = $message['messages'];
 
                 $this->addFlash('error', $error);
-                $this->addFlash('info', 'CEVA');
+                //$this->addFlash('info', 'CEVA');
                 return $this->redirectToRoute('app_exercise_update', [
                     'id' => $id,
                 ]);

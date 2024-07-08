@@ -26,9 +26,9 @@ class ExerciseService
 
     public function verificationUniqueName(Exercise $exercise): array
     {
-        $exerciseNew = $this->exerciseRepository->findById($exercise->getId());
+        //$exerciseNew = $this->exerciseRepository->findById($exercise->getId());
 
-        $status = $this->saveExercise($exerciseNew);
+        $status = $this->saveExercise($exercise);
 
         if(key($status) == 'success')
         {
@@ -45,7 +45,7 @@ class ExerciseService
 
         try {
 
-            $exerciseNew = $this->exerciseRepository->findType($exercise->getName());
+            $exerciseNew = $this->exerciseRepository->findType($exercise->getName(), $exercise->getId());
 
             if($exerciseNew)
             {

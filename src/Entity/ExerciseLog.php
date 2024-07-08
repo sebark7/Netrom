@@ -22,7 +22,7 @@ class ExerciseLog
     #[ORM\Column]
     private ?int $sets = null;
 
-    #[ORM\ManyToOne(inversedBy: 'exerciseLogs')]
+    #[ORM\ManyToOne(inversedBy: 'exerciseLogs', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Workout $workout = null;
 

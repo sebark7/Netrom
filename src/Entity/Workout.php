@@ -28,11 +28,12 @@ class Workout
     /**
      * @var Collection<int, ExerciseLog>
      */
-    #[ORM\OneToMany(targetEntity: ExerciseLog::class, mappedBy: 'workout', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: ExerciseLog::class, mappedBy: 'workout', orphanRemoval: true, cascade:["persist"])]
     private Collection $exerciseLogs;
 
     public function __construct()
     {
+        $this->createdAt = new \DateTimeImmutable();
         $this->exerciseLogs = new ArrayCollection();
     }
 

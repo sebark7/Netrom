@@ -51,11 +51,13 @@ class ExerciseRepository extends ServiceEntityRepository
         }
     }
 
-    public function findType(string $name) : ?Exercise
+    public function findType(string $name, int $id) : ?Exercise
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.name = :val')
+            ->andWhere('m.id <> :Id')
             ->setParameter('val', $name)
+            ->setParameter('Id', $id)
             ->getQuery()
             ->getOneOrNullResult();
     }

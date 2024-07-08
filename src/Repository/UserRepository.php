@@ -30,7 +30,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ini_set('memory_limit', '256M');
 
         return $query = $this->createQueryBuilder('u')
-            ->select('u.id, u.email') // Only select necessary fields
             ->getQuery()
             ->getResult();
     }

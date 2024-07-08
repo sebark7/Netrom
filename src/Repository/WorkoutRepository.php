@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Exercise;
 use App\Entity\Workout;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -15,6 +16,13 @@ class WorkoutRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Workout::class);
     }
+
+    public function saveWorkout(Workout $workout): void
+    {
+        $this->getEntityManager()->persist($workout);
+        $this->getEntityManager()->flush();
+    }
+
 
     //    /**
     //     * @return Workout[] Returns an array of Workout objects

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -21,6 +22,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
+
+    #[ORM\Column]
+    private ?string $name = null;
 
     /**
      * @var list<string> The user roles
@@ -39,6 +43,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Workout::class, mappedBy: 'person', orphanRemoval: true)]
     private Collection $workouts;
+
+    #[ORM\Column(type: Types::BLOB, nullable: true)]
+    private $imageData = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageMimeType = null;
+
+    public function getImageData()
+    {
+        return $this->imageData;
+    }
+
+    public function setImageData($imageData): self
+    {
+        $this->imageData = $imageData;
+        return $this;
+    }
+
+    public function getImageMimeType(): ?string
+    {
+        return $this->imageMimeType;
+    }
+
+    public function setImageMimeType(?string $imageMimeType): self
+    {
+        $this->imageMimeType = $imageMimeType;
+        return $this;
+    }
+
 
     public function __construct()
     {
@@ -148,5 +181,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
     }
 }

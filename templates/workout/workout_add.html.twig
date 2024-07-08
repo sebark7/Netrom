@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create workout{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+
+    <ul class="exerciseLogs"
+        data-index="{{ form.exerciseLogs|length > 0 ? form.exerciseLogs|last.vars.name + 1 : 0 }}"
+        data-prototype="{{ form_widget(form.exerciseLogs.vars.prototype)|e('html_attr') }}"
+    >
+        {% for exerciseLog in form.exerciseLogs %}
+            <li>{{ form_row(exerciseLog) }}</li>
+        {% endfor %}
+    </ul>
+    <button type="button" class="add_item_link" data-collection-holder-class="exerciseLogs">Add a exercise log</button>
+    {{ form_end(form) }}
+
+    <script>
+        document
+            .querySelectorAll('.add_item_link')
+            .forEach(btn => {
+                btn.addEventListener("click", addFormToCollection)
+            });
+
+        function addFormToCollection(e) {
+            const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+            const item = document.createElement('li');
+
+            item.innerHTML = collectionHolder
+                .dataset
+                .prototype
+                .replace(
+                    /__name__/g,
+                    collectionHolder.dataset.index
+                );
+
+            collectionHolder.appendChild(item);
+
+            collectionHolder.dataset.index++;
+
+            // add remove button
+            const removeFormButton = document.createElement('button');
+            removeFormButton.innerText = 'Remove this Exercise Log';
+
+            item.append(removeFormButton);
+
+            removeFormButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                // remove the li for the exerciseLog form
+                item.remove();
+            });
+        }
+    </script>
+
+{% endblock %}
