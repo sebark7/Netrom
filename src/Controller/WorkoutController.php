@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class WorkoutController extends AbstractController
 {
-    #[Route('/workout', name: 'app_workout')]
+    #[Route('/workout', name: 'app_workouts')]
     public function index(WorkoutRepository $repository): Response
     {
         $user = $this->getUser();
@@ -40,7 +40,7 @@ class WorkoutController extends AbstractController
 
     #[Route('/workout/add', name: 'app_workout_add')]
     public function addWorkout(Request $request,
-                                WorkoutRepository $repository): Response
+                               WorkoutRepository $repository): Response
     {
 
         $workout = new Workout();
@@ -62,11 +62,24 @@ class WorkoutController extends AbstractController
 
             $repository->saveWorkout($workout);
 
-            return $this->redirectToRoute('app_workout');
+            return $this->redirectToRoute('app_workouts');
         }
 
         return $this->render('workout/workout_add.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+
+    #[Route('/workout/{id}', name: 'app_workout_id',  requirements: ['id' => '\d+'])]
+    public function retrieveWorkoutUser(int $id, WorkoutRepository $repository): Response
+    {
+
+        $workouts = $repository->findBy(['id' => $id]);
+
+        return $this->render('workout/index.html.twig', [
+            'controller_name' => 'WorkoutController',
+            'workouts' => $workouts,
         ]);
     }
 

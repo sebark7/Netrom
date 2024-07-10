@@ -1,0 +1,53 @@
+.example-wrapper {
+    margin: 1em auto;
+    max-width: 800px;
+    width: 95%;
+    font: 18px/1.5 sans-serif;
+}
+
+.example-wrapper code {
+    background: #F5F5F5;
+    padding: 2px 6px;
+}
+
+html,
+body,
+.intro {
+    height: 100%;
+}
+
+.gradient-custom-1 {
+    /* fallback for old browsers */
+    background: #cd9cf2;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to top, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to top, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1))
+}
+
+table td,
+table th {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+tbody td {
+    font-weight: 500;
+    color: #999999;
+}
+
+table tbody tr:hover th{
+    background-color: #dbdbdb;
+}
+
+
+table tbody tr:hover td{
+    background-color: #dbdbdb;
+}
+.mt-negative-60
+{
+    margin-top: -60px;
+}

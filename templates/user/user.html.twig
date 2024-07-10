@@ -1,16 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends'home/home.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% block javascripts %}
+{% endblock %}
+
+  {% block stylesheets %}
+      {{ parent() }}
+      <link rel="stylesheet" href="{{ asset('login/user.css') }}">
+  {% endblock %}
 
 {% block body %}
-    <style>
 
-    </style>
-
-    {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('login/user.css') }}">
-    {% endblock %}
     <body>
+    {{ parent() }}
     <div class="container mt-5">
 
         <div class="row d-flex justify-content-center">
@@ -20,24 +21,36 @@
                 <div class="card p-3 py-4">
 
                     <div class="text-center">
-                        <img src="{{  mimeType }}" alt="User Image" style="max-width: 200px;">
+                        {% if user.imageData %}
+                            <img src="{{ "data:" ~ mimeType ~ ";base64," ~ imageData ~}}" alt="User Image"
+                                 style="max-width: 200px; max-height: 200px; width: 100px; height: 100px">
+                        {% else %}
+                            <p>No image available</p>
+                        {% endif %}
                     </div>
 
                     <div class="text-center mt-3">
-                        <span class="bg-secondary p-1 px-4 rounded text-white">PRO</span>
+                        {% for role in user.roles %}
+
+                            <span class="bg-secondary p-1 px-4 rounded text-white"> {{ role | replace({'ROLE_': ''}) }}</span>
+                        {% endfor %}
                         <h5 class="mt-2 mb-0">{{ user.name }}</h5>
                         <span>{{ user.email }}</span>
 
-                        <div class="px-4 mt-1">
-
+                        <div class="px-4 mt-1" style="padding: 20px;">
+                            <a href="{{ path('app_user') }}">Edit Account</a>
                         </div>
-
+                        <h2 style="">Trainings</h2>
+                        {% set count = 0 %}
+                        {% for work in user.getWorkouts() %}
+                            <button>
+                                {{ count }}
+                                <a href="{{ path('app_workout_id', {'id' : work.id} ) }}">  {{ work.name }}</a>
+                            </button>
+                            {% set count = count + 1 %}
+                        {% endfor %}
                         <ul class="social-list">
-                            <li><i class="fa fa-facebook"></i></li>
-                            <li><i class="fa fa-dribbble"></i></li>
-                            <li><i class="fa fa-instagram"></i></li>
-                            <li><i class="fa fa-linkedin"></i></li>
-                            <li><i class="fa fa-google"></i></li>
+
                         </ul>
                     </div>
                 </div>

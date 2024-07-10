@@ -21,17 +21,57 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
 
-        $imageData = $user->getImageData();
-        $mimeType = $user->getImageMimeType();
+        $imageData = null;
+        $mimeType = null;
+        $stringData = null;
+
+        if($user != null)
+        {
+            $imageData = $user->getImageData();
+            $mimeType = $user->getImageMimeType();
+            if($imageData !=null)
+            {
+                $stringData = stream_get_contents($imageData);
+                $stringData = base64_encode($stringData);
+            }
+        }
 
         return $this->render('user/user.html.twig', [
             'controller_name' => 'UserController',
             'user' => $user,
             'mimeType' => $mimeType,
+            'imageData' => $stringData,
         ]);
     }
 
-    #[Route('/users', name: 'app_users', methods: ['GET'])]
+
+
+    #[Route('/user/{id}', name: 'app_user_id_retrieving')]
+    public function indexId(int $id, UserRepository $repository): Response
+    {
+        $user = $repository->findId($id);
+
+        $imageData = $user->getImageData();
+        $mimeType = $user->getImageMimeType();
+
+        $stringData = null;
+
+        if($imageData != null)
+        {
+            $stringData = stream_get_contents($imageData);
+            $stringData = base64_encode($stringData);
+        }
+
+        return $this->render('user/user.html.twig', [
+            'controller_name' => 'UserController',
+            'user' => $user,
+            'mimeType' => $mimeType,
+            'imageData' => $stringData,
+        ]);
+    }
+
+
+    #[Route('/users', name: 'app_users_id', methods: ['GET'])]
     public function userList(UserRepository $repository): Response
     {
         $userList = $repository->findAll();
@@ -52,6 +92,7 @@ class UserController extends AbstractController
         $form = $this->createForm(USerType::class, $user);
 
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated

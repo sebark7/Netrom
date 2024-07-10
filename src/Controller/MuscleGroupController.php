@@ -24,12 +24,14 @@ class MuscleGroupController extends AbstractController
             'controller_name' => 'MuscleGroupController',
             'muscle_groups' => $muscleGroups
         ]);
+
+
     }
 
 
     #[Route('/muscle_group', name: 'app_muscle_group_name')]
     public function muscleGroupView(MuscleGroupRepository $repository,
-                                    Request $request): Response
+                                    Request               $request): Response
     {
 
         $name = $request->query->get('name', '');
@@ -43,7 +45,7 @@ class MuscleGroupController extends AbstractController
     }
 
     #[Route('/muscle_group/add', name: 'add_muscle_group')]
-    public function store(Request $request, MuscleGroupRepository $repository,
+    public function store(Request            $request, MuscleGroupRepository $repository,
                           MuscleGroupService $muscleGroupService): Response
     {
 
@@ -56,15 +58,13 @@ class MuscleGroupController extends AbstractController
 
         $error = null;
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $muscleGroup = $form->getData();
 
             $message = $muscleGroupService->verificationUniqueValue($muscleGroup);
 
-            if(key($message) == "error")
-            {
+            if (key($message) == "error") {
                 $error = $message['messages'];
                 return $this->render('muscle_group/addMuscleGroup.html.twig', [
                     'form' => $form,

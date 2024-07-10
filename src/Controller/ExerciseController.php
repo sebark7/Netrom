@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Exercise;
+use App\Entity\ExerciseLog;
+use App\Entity\Workout;
 use App\Form\ExerciseType;
 use App\Repository\ExerciseRepository;
 use App\Repository\MuscleGroupRepository;
+use App\Repository\WorkoutRepository;
 use App\Services\ExerciseService;
 use JetBrains\PhpStorm\NoReturn;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -73,6 +76,43 @@ class ExerciseController extends AbstractController
         ]);
     }
 
+    #[Route('/exercise/workout/{id}', name: 'app_exercise_workout_id')]
+    public function exerciseWorkoutView(int $id, WorkoutRepository $repository,
+                                        ExerciseRepository $repositoryExercise): Response
+    {
+        /** @var Workout $workout */
+        $workout = $repository->findOneBy(['id' => $id]);
+        //dd($workout);
+
+        /** @var ExerciseLog $logs */
+        $logs = $workout->getExerciseLogs();
+        //dd($logs);
+
+        $exercises = [];
+        foreach ($logs as $log) {
+            $exercises[] = $log->getExercise();
+        }
+
+//        /** @var Exercise $exercices */
+//        $exercices = null;
+//
+//        foreach ($logs as $log)
+//        {
+//            $exercices->addExerciseLog($log);
+//        }
+        /*
+         * Folosesc workout intr-un twig si de acolo iau din logs exercitiile
+         *
+         * */
+
+        return $this->render('exercise/exercise_user.html.twig', [
+            'controller_name' => 'ExerciseControllerUser',
+            'exercises' => $exercises
+        ]);
+    }
+
+
+
     #[Route('/exercise/update/{id}', name: 'app_exercise_update', methods: ['GET', 'PUT'])]
     public function exerciseUpdate(Request $request, int $id, ExerciseRepository $repository,
                                    ExerciseService $service): Response
@@ -80,6 +120,7 @@ class ExerciseController extends AbstractController
 
         $exercise = $service->findById($id);
 
+        $user = $this->getUser();
 
         $form = $this->createForm(ExerciseType::class, $exercise, [
             'method' => 'PUT',
@@ -87,25 +128,27 @@ class ExerciseController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if(in_array("ROLE_TRAINER", $user->getRoles()) || $service->verificationUser($user))
+        {
 
-            $exercise = $form->getData();
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            $message = $service->verificationUniqueName($exercise);
+                $exercise = $form->getData();
 
-            if(key($message) == "error")
-            {
-                $error = $message['messages'];
+                $message = $service->verificationUniqueName($exercise);
 
-                $this->addFlash('error', $error);
-                //$this->addFlash('info', 'CEVA');
-                return $this->redirectToRoute('app_exercise_update', [
-                    'id' => $id,
-                ]);
+                if (key($message) == "error") {
+                    $error = $message['messages'];
+
+                    $this->addFlash('error', $error);
+                    //$this->addFlash('info', 'CEVA');
+                    return $this->redirectToRoute('app_exercise_update', [
+                        'id' => $id,
+                    ]);
+                }
+                return $this->redirectToRoute('app_exercise');
             }
-            return $this->redirectToRoute('app_exercise');
         }
-        
         return $this->render('exercise/exercise_update.html.twig', [
             'form' => $form->createView(),
         ]);

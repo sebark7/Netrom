@@ -1,114 +1,55 @@
-{% extends 'base.html.twig' %}
+{% extends 'home/home.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
-
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    html,
-    body,
-    .intro {
-        height: 100%;
-    }
-
-    .gradient-custom-1 {
-        /* fallback for old browsers */
-        background: #cd9cf2;
-
-        /* Chrome 10-25, Safari 5.1-6 */
-        background: -webkit-linear-gradient(to top, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1));
-
-        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-        background: linear-gradient(to top, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1))
-    }
-
-    table td,
-    table th {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-    tbody td {
-        font-weight: 500;
-        color: #999999;
-    }
-
-</style>
+{% block title %}{% endblock %}
 
     {% block stylesheets %}
-        {% endblock %}
-
-{#<div class="example-wrapper">#}
-
-{#    <table class="min-w-full divide-y divide-gray-200">#}
-
-{#        <thead class="bg-gray-800 text-white">#}
-{#        <tr>#}
-{#            <td class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Id</td>#}
-{#            <td class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</td>#}
-{#        </tr>#}
-
-{#        </thead>#}
-
-{#        <tbody class="bg-white divide-y divide-gray-200">#}
-{#        {%#}
-{#            for user in userList#}
-{#        %}#}
-{#            <tr>#}
-{#                <td class="px-6 py-4 whitespace-nowrap">#}
-{#                    {{ user.id }}#}
-{#                </td>#}
-{#                <td class="px-6 py-4 whitespace-nowrap">#}
-{#                    {{ user.email }}#}
-{#                </td>#}
-{#            </tr>#}
-{#        {% endfor %}#}
-{#        </tbody>#}
-{#    </table>#}
-{#</div>#}
+        {{ parent() }}
+        <link rel="stylesheet" href="{{ asset('login/users.css') }}">
+    {% endblock %}
 
 
-    <section class="intro">
-        <div class="gradient-custom-1 h-100">
-            <div class="mask d-flex align-items-center h-100">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="table-responsive bg-white">
-                                <table class="table mb-0">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">Id</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Roles</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for user in userList %}
+{% block body %}
+    {{ parent() }}
+        <div class="mask d-flex align-items-center h-100">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="table-responsive bg-white">
+                            <table class="table mb-0">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Roles</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in userList %}
                                     <tr>
                                         <th scope="row" style="color: #666666;">{{ user.id }}</th>
-                                        <td>{{ user.email}}</td>
+                                        <td>{{ user.email }}</td>
                                         <td>{{ user.name }}</td>
                                         <td>
                                             {% for roles in user.getRoles() %}
                                                 <div style="display: inline-flex; flex-wrap:wrap">
-                                                    <div style="margin-right: 1rem">{{ roles }}</div>
+                                                    <div style="margin-right: 0.5rem; background-color: #c850c0; border-radius: 5px; padding: 1px">{{ roles }}</div>
                                                 </div>
                                             {% endfor %}
                                         </td>
+                                        <td>
+                                            <a href="{{ path('app_user_id_retrieving', {'id': user.id}) }}"><i
+                                                        class="fa fa-address-card"></i></a>
+                                        </td>
+
                                     </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
-
 {% endblock %}
