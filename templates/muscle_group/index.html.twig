@@ -47,6 +47,60 @@
                 </tr>
             </tbody>
         </table>
-
     </div>
+
+
+
+{#    <div class="mask d-flex align-items-center h-75">#}
+{#        <div class="container">#}
+{#            <div class="row justify-content-center">#}
+{#                <div class="col-12">#}
+{#                    <div class="table-responsive bg-white">#}
+{#                        <table class="table mb-0">#}
+{#                            <thead>#}
+{#                            <tr>#}
+{#                                <th scope="col">Name</th>#}
+{#                                <th scope="col">Type</th>#}
+{#                                <th scope="col">MuscleGroups</th>#}
+{#                                <th scope="col">Actions</th>#}
+{#                            </tr>#}
+{#                            </thead>#}
+{#                            <tbody>#}
+{#                            {% for exercise in exercises %}#}
+{#                                <tr>#}
+{#                                    <td>{{ exercise.tipul }}</td>#}
+{#                                    <td>{{ exercise.type }}</td>#}
+{#                                    <td>#}
+{#                                        <a class="cursor-pointer"#}
+{#                                           href="{{ path('app_muscle_group_name', {'name': exercise.getMuscleGroup().getTipul()}) }}">#}
+{#                                            {{ exercise.getMuscleGroup().getTipul() }}#}
+{#                                        </a>#}
+{#                                    </td>#}
+{#                                    <td style="display: flex">#}
+
+{#                                        <a href="{{ path('app_exercise_update', {'id' :exercise.getId()} ) }}">#}
+{#                                            <i class='fas fa-align-justify edit' style='font-size:36px'></i>#}
+{#                                        </a>#}
+
+{#                                        <form action="{{ path('app_exercise_delete', {'id' : exercise.getId()}) }}"#}
+{#                                              method="POST">#}
+{#                                            <input type="hidden" name="_method" value="DELETE">#}
+{#                                            <button type="submit">#}
+{#                                                <i class='fas fa-trash delete'></i>#}
+{#                                            </button>#}
+{#                                        </form>#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                            {% endfor %}#}
+{#                            </tbody>#}
+{#                        </table>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+
+
+
 {% endblock %}

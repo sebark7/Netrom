@@ -10,8 +10,7 @@
 
 {% block body %}
 
-    <body>
-    {{ parent() }}
+
     <div class="container mt-5">
 
         <div class="row d-flex justify-content-center">
@@ -37,17 +36,16 @@
                         <h5 class="mt-2 mb-0">{{ user.name }}</h5>
                         <span>{{ user.email }}</span>
 
-                        <div class="px-4 mt-1" style="padding: 20px;">
-                            <a href="{{ path('app_user') }}">Edit Account</a>
-                        </div>
-                        <h2 style="">Trainings</h2>
-                        {% set count = 0 %}
+                        {% if visualise == true %}
+                            <div class="px-4 mt-1" style="padding: 20px;">
+                                <a href="{{ path('app_user') }}">Edit Account</a>
+                            </div>
+                        {% endif %}
+                        <h2 class="py-4">Trainings</h2>
                         {% for work in user.getWorkouts() %}
                             <button>
-                                {{ count }}
                                 <a href="{{ path('app_workout_id', {'id' : work.id} ) }}">  {{ work.name }}</a>
                             </button>
-                            {% set count = count + 1 %}
                         {% endfor %}
                         <ul class="social-list">
 
@@ -58,7 +56,5 @@
         </div>
 
     </div>
-    </body>
-
 
 {% endblock %}

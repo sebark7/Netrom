@@ -31,7 +31,7 @@ class ExerciseController extends AbstractController
 
     #[Route('/exercise/add', name: 'app_exercise_add')]
     public function addExercise(Request               $request,
-                                ExerciseRepository $repository,
+                                ExerciseRepository    $repository,
                                 MuscleGroupRepository $muscleGroupRepository): Response
     {
 
@@ -40,7 +40,6 @@ class ExerciseController extends AbstractController
         $form = $this->createForm(ExerciseType::class, $exercise);
 
         $form->handleRequest($request);
-
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -70,14 +69,14 @@ class ExerciseController extends AbstractController
     {
         $exercise = $repository->findById($id);
 
-        return $this->render('exercise/exercises.html.twig', [
+        return $this->render('exercise/exercise.html.twig', [
             'controller_name' => 'ExerciseController',
             'exercise' => $exercise
         ]);
     }
 
     #[Route('/exercise/workout/{id}', name: 'app_exercise_workout_id')]
-    public function exerciseWorkoutView(int $id, WorkoutRepository $repository,
+    public function exerciseWorkoutView(int                $id, WorkoutRepository $repository,
                                         ExerciseRepository $repositoryExercise): Response
     {
         /** @var Workout $workout */
@@ -112,15 +111,12 @@ class ExerciseController extends AbstractController
     }
 
 
-
     #[Route('/exercise/update/{id}', name: 'app_exercise_update', methods: ['GET', 'PUT'])]
-    public function exerciseUpdate(Request $request, int $id, ExerciseRepository $repository,
+    public function exerciseUpdate(Request         $request, int $id, ExerciseRepository $repository,
                                    ExerciseService $service): Response
     {
 
         $exercise = $service->findById($id);
-
-        $user = $this->getUser();
 
         $form = $this->createForm(ExerciseType::class, $exercise, [
             'method' => 'PUT',
@@ -128,27 +124,23 @@ class ExerciseController extends AbstractController
 
         $form->handleRequest($request);
 
-        if(in_array("ROLE_TRAINER", $user->getRoles()) || $service->verificationUser($user))
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            if ($form->isSubmitted() && $form->isValid()) {
+            $exercise = $form->getData();
 
-                $exercise = $form->getData();
+            $message = $service->verificationUniqueName($exercise);
 
-                $message = $service->verificationUniqueName($exercise);
+            if (key($message) == "error") {
+                $error = $message['messages'];
 
-                if (key($message) == "error") {
-                    $error = $message['messages'];
-
-                    $this->addFlash('error', $error);
-                    //$this->addFlash('info', 'CEVA');
-                    return $this->redirectToRoute('app_exercise_update', [
-                        'id' => $id,
-                    ]);
-                }
-                return $this->redirectToRoute('app_exercise');
+                $this->addFlash('error', $error);
+                return $this->redirectToRoute('app_exercise_update', [
+                    'id' => $id,
+                ]);
             }
+            return $this->redirectToRoute('app_exercise');
         }
+
         return $this->render('exercise/exercise_update.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -159,9 +151,8 @@ class ExerciseController extends AbstractController
     public function exerciseDelete(Request $request, int $id, ExerciseRepository $repository): Response
     {
 
-
         $exercise = $repository->findById($id);
-        dump($exercise);
+        //dump($exercise);
 
         $repository->deleteById($exercise->getId());
 

@@ -37,8 +37,13 @@ security:
     access_control:
       - {path: ^/users, roles: ROLE_TRAINER}
       - {path: ^/workout, roles: IS_AUTHENTICATED_FULLY}
-      - {path: ^/exercise, roles: IS_AUTHENTICATED_FULLY}
       - {path: ^/muscle_group, roles: ROLE_TRAINER}
+      - {path: ^/muscle_group/add, roles: ROLE_TRAINER}
+      - {path: ^/workout/add, roles: ROLE_TRAINER}
+      - {path: ^/workout/update, roles: ROLE_TRAINER}
+      - {path: ^/exercise/add, roles: ROLE_TRAINER}
+      - {path: ^/exercise/delete, roles: ROLE_TRAINER}
+      - {path: ^/exercise/update, roles: ROLE_TRAINER}
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

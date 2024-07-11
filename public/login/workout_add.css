@@ -1,0 +1,12 @@
+.form_exercise {
+    background-color: #0088ff;
+    width: 40%;
+    padding: 30px 30px 30px 30px;
+    border-radius: 20px;
+    color: white;
+    background: linear-gradient(-135deg, #c850c0, #4158d0);
+}
+
+/*.custom-radio-spacing:not(:last-child) {*/
+/*    margin-right: 1rem;  !* Adjust this value as needed *!*/
+/*}*/

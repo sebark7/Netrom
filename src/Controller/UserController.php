@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ExerciseType;
 use App\Form\USerType;
+use App\Repository\ExerciseRepository;
 use App\Repository\UserRepository;
+use App\Services\ExerciseService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +18,6 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 class UserController extends AbstractController
 {
 
-
     #[Route('/user', name: 'app_user')]
     public function index(): Response
     {
@@ -25,12 +27,10 @@ class UserController extends AbstractController
         $mimeType = null;
         $stringData = null;
 
-        if($user != null)
-        {
+        if ($user != null) {
             $imageData = $user->getImageData();
             $mimeType = $user->getImageMimeType();
-            if($imageData !=null)
-            {
+            if ($imageData != null) {
                 $stringData = stream_get_contents($imageData);
                 $stringData = base64_encode($stringData);
             }
@@ -44,20 +44,51 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/user/update', name: 'app_user_exercise_update', methods: ['GET', 'PUT'])]
+    public function exerciseUpdate(Request $request, UserRepository $repository): Response
+    {
+
+        $user = $this->getUser();
+
+        $form = $this->createForm(USerType::class, $user, [
+            'method' => 'PUT',
+        ]);
+
+        $form->handleRequest($request);
 
 
-    #[Route('/user/{id}', name: 'app_user_id_retrieving')]
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $exercise = $form->getData();
+
+            return $this->redirectToRoute('app_user');
+        }
+
+        return $this->render('exercise/exercise_update.html.twig',
+            ['form' => $form->createView(),]);
+
+    }
+
+
+    #[Route('/user/{id}', name: 'app_user_id_retrieving', requirements: ['id' => '\d+'])]
     public function indexId(int $id, UserRepository $repository): Response
     {
-        $user = $repository->findId($id);
+        $loggedUSer = $this->getUser();
+        $visualise = true;
+        /** @var User $user */
+        $user = $repository->findById($id);
+
+        if($id != $loggedUSer->getId())
+        {
+            $visualise = false;
+        }
 
         $imageData = $user->getImageData();
         $mimeType = $user->getImageMimeType();
 
         $stringData = null;
 
-        if($imageData != null)
-        {
+        if ($imageData != null) {
             $stringData = stream_get_contents($imageData);
             $stringData = base64_encode($stringData);
         }
@@ -67,6 +98,7 @@ class UserController extends AbstractController
             'user' => $user,
             'mimeType' => $mimeType,
             'imageData' => $stringData,
+            'visualise' => $visualise,
         ]);
     }
 
@@ -82,9 +114,9 @@ class UserController extends AbstractController
     }
 
 
-    #[Route('/user/register', name: 'register_user')]
-    public function store(Request $request, UserRepository $repository,
-    UserPasswordHasherInterface $passwordHasher): Response
+    #[Route('/register', name: 'register_user')]
+    public function store(Request                     $request, UserRepository $repository,
+                          UserPasswordHasherInterface $passwordHasher): Response
     {
 
         $user = new User();

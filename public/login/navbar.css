@@ -5,8 +5,9 @@
 body {
     /*background-color:#f2f2f2;*/
     font-family: 'Raleway', sans-serif;
-    background-image: url('/public/gym_picture.webp');
-    background-size: cover;
+    /*background-image: url('../../gym_picture.webp');*/
+    background: linear-gradient(to top, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1));
+    /*background-size: cover;*/
 }
 #ribbon {
     position:absolute;

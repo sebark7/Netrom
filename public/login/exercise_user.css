@@ -1,0 +1,35 @@
+.form_exercise {
+    background-color: #0088ff;
+    width: 40%;
+    padding: 30px 30px 30px 30px;
+    border-radius: 20px;
+    color: white;
+    background: linear-gradient(-135deg, #c850c0, #4158d0);
+}
+
+i.edit {
+    color: black;
+}
+
+
+i.edit:hover {
+    color: cornflowerblue;
+}
+
+button i.delete {
+    color: black;
+    font-size: 36px;
+    margin-left: 25px;
+}
+
+button:hover i.delete {
+    color: red;
+}
+
+
+button {
+    border: none;
+    background: none;
+    padding: 0;
+    color: transparent;
+}

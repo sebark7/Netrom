@@ -1,0 +1,59 @@
+{% extends 'home/home.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('workout.css') }}">
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+{#    {% for cal in calories %}#}
+{#        <p> {{ cal }} kcal </p>#}
+{#    {% endfor %}#}
+
+    {#        <div class="mask d-flex align-items-center h-75"> #}
+    {#            <div class="container"> #}
+    {#                <div class="row justify-content-center"> #}
+    {#                    <div class="col-12"> #}
+    {#                        <div class="table-responsive bg-white"> #}
+    {#                            <table class="table mb-0"> #}
+    {#                                <thead> #}
+    {#                                <tr> #}
+    {#                                    <th scope="col">Id</th> #}
+    {#                                    <th scope="col">Name</th> #}
+    {#                                    <th scope="col">Date</th> #}
+    {#                                    <th scope="col">Email</th> #}
+    {#                                    <th scope="col">Action</th> #}
+    {#                                </tr> #}
+    {#                                </thead> #}
+    {#                                <tbody> #}
+    {#                                {% for workout in workouts %} #}
+    {#                                    <tr> #}
+    {#                                        <th scope="row" style="color: #666666;">{{ workout.id }}</th> #}
+    {#                                        <td>{{ workout.name }}</td> #}
+    {#                                        <td>{{ workout.createdAt|date("m/d/Y h:m:s") }}</td> #}
+    {#                                        <td>{{ workout.person.getEmail() }}</td> #}
+    {#                                        <td> #}
+
+    {#                                                <a href="{{ path('app_exercise_workout_id' , {'id' : workout.id}) }}"> #}
+    {#                                                    View Exercises #}
+    {#                                                </a> #}
+    {#                                        </td> #}
+
+    {#                                    </tr> #}
+    {#                                {% endfor %} #}
+    {#                                </tbody> #}
+    {#                            </table> #}
+    {#                        </div> #}
+    {#                    </div> #}
+    {#                </div> #}
+    {#            </div> #}
+    {#    </div> #}
+
+{% endblock %}

@@ -32,17 +32,31 @@
             </div>
             <ul>
                 <li><a href="{{ path('app_home') }}">Home</a></li>
-                <li><a href="{{ path('app_workouts') }}">Workout</a></li>
-                {#                <li class="dropdown" onmouseover="hover(this);" onmouseout="out(this);"><a href="#">Gallery &nbsp;<i class="fa fa-caret-down"></i></a> #}
-                {#                    <div class="dd"> #}
-                {#                        <div id="up_arrow"></div> #}
-                {#                        <ul> #}
-                {#                            <li><a href="#">2019</a></li> #}
-                {#                            <li><a href="#">2018</a></li> #}
-                {#                            <li><a href="#">2017</a></li> #}
-                {#                        </ul> #}
-                {#                    </div> #}
-                {#                </li> #}
+
+                {% if app.user %}
+
+                <li class="dropdown" onmouseover="hover(this);" onmouseout="out(this);"><a
+                            href="{{ path('app_workouts') }}">Workout
+                        &nbsp;<i class="fa fa-caret-down"></i></a>
+                    <div class="dd">
+                        <div id="u_a_c">
+                            <div id="up_arrow"></div>
+                        </div>
+                        <ul>
+                            <li><a href="{{ path('app_workout_add') }}">Add</a></li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {#                <li class="dropdown" onmouseover="hover(this);" onmouseout="out(this);"><a href="#">Gallery &nbsp;<i class="fa fa-caret-down"></i></a> #}
+                    {#                    <div class="dd"> #}
+                    {#                        <div id="up_arrow"></div> #}
+                    {#                        <ul> #}
+                    {#                            <li><a href="#">2019</a></li> #}
+                    {#                            <li><a href="#">2018</a></li> #}
+                    {#                            <li><a href="#">2017</a></li> #}
+                    {#                        </ul> #}
+                    {#                    </div> #}
+                    {#                </li> #}
                 <li><a href="#">Contact</a></li>
 
                 {% if app.user %}
@@ -81,7 +95,7 @@
     </div>
 
 
-    <div style=" position:fixed;
+    <div title="WorkoutAdd" style=" position:fixed;
     right: 20px;
     bottom: 20px;
     border-radius: 20px;
@@ -95,12 +109,10 @@
             <i class='fa-solid fa-dumbbell' style='font-size:40px'></i>
         </a>
     </div>
-
-
 {% endblock %}
 
 
-<body style="background-image: url('../../gym_picture.webp')">
+<body>
 {% block body %}
 
 {% endblock %}

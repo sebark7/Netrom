@@ -1,55 +1,44 @@
-{% extends 'base.html.twig' %}
+{% extends 'home/home.html.twig' %}
 
-{% block title %}Hello MuscleGroupController!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
 {% block body %}
-    <style>
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-            font: 18px/1.5 sans-serif;
-        }
-
-        .example-wrapper code {
-            background: #F5F5F5;
-            padding: 2px 6px;
-        }
-    </style>
 
 
-    <div class="example-wrapper">
-
-        <table class="min-w-full divide-y divide-gray-200">
-
-            <thead class="bg-gray-800 text-white">
-            <tr>
-                <td class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Id</td>
-                <td class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</td>
-                <td class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Exercises</td>
-            </tr>
-
-            </thead>
-
-            <tbody class="bg-white divide-y divide-gray-200">
-            {% for muscle in muscle_groups %}
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        {{ muscle.id }}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        {{ muscle.tipul }}
-                    </td>
-                    <td>
-                        {% for exercise in muscle.getExerciseId %}
-
-                            <a class="cursor-pointer" href="{{ path('app_exercise_id', {'id': exercise.id}) }}">{{ exercise.getName() }}</a>
-
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
+    <div class="mask d-flex align-items-center h-75">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="table-responsive bg-white">
+                        <table class="table mb-0">
+                            <thead>
+                            <tr>
+                                <th scope="col">Type</th>
+                                <th scope="col">Exercises</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for muscle in muscle_groups %}
+                                <tr>
+                                    <td>{{ muscle.tipul }}</td>
+                                    <td>
+                                        {% for exercise in muscle.getExerciseId %}
+                                            <a class="cursor-pointer"
+                                               href="{{ path('app_exercise_id', {'id': exercise.id}) }}">{{ exercise.getName() }}</a>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
 {% endblock %}
